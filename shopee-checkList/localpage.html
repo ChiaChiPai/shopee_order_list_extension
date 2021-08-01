@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Budget Manager Options</title>
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="localpage.js"></script>
+    <style>
+      h1 {
+        text-align: center;
+      }
+
+      .keywords {
+        margin: 0 auto;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+      }
+
+
+      .keywords thead {
+        cursor: pointer;
+        background: #c9dff0;
+      }
+      .keywords thead tr th { 
+        font-weight: bold;
+        padding: 12px 30px;
+        padding-left: 42px;
+      }
+      .keywords thead tr th span { 
+        padding-right: 20px;
+        background-repeat: no-repeat;
+        background-position: 100% 100%;
+      }
+
+      .keywords thead tr th.headerSortUp, .keywords thead tr th.headerSortDown {
+        background: #acc8dd;
+      }
+
+
+      .keywords tbody tr { 
+        color: #555;
+      }
+      .keywords tbody tr td {
+        text-align: center;
+        padding: 15px 10px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>蝦皮出貨單</h1>
+  
+    <table class="keywords" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th><span>訂單次序</span></th>
+          <th><span>寄件編號</span></th>
+          <th><span>買家姓名</span></th>
+          <th><span>產品名稱</span></th>
+          <th><span>圖片</span></th>
+          <th><span>尺寸</span></th>
+          <th><span>數量</span></th>
+          <th><span>備註</span></th>
+        </tr>
+      </thead>
+      <tbody id="content">
+        <!-- <tr>
+          <td>silly tshirts</td>
+          <td>6,000</td>
+          <td>110</td>
+          <td>1.8%</td>
+          <td>22.2</td>
+          <td>1.8%</td>
+          <td>22.2</td>
+        </tr> -->
+      </tbody>
+    </table>
+  </body>
+</html>
