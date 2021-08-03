@@ -14,7 +14,7 @@ chrome.storage.sync.get('apiList',function(data){
     return data;
   }).then(data => {
     if(data.code === 0) {
-      let package_list = data.data.package_list;
+      let package_list = data.data.package_list.reverse();
       package_list.forEach((item, index) => {
         const sJson = JSON.stringify({ 
           orders: [{order_id: item.order_id, region_id: item.region_id, shop_id: item.shop_id}]
