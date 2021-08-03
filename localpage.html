@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Budget Manager Options</title>
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="localpage.js"></script>
+    <style>
+      h1 {
+        text-align: center;
+      }
+
+      .keywords {
+        margin: 0 auto;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      .keywords thead {
+        cursor: pointer;
+        background: #c9dff0;
+      }
+      .keywords thead tr th { 
+        font-weight: bold;
+        padding: 12px 20px;
+        font-size: 18px;
+      }
+      .keywords thead tr th span { 
+        padding-right: 20px;
+        background-repeat: no-repeat;
+        background-position: 100% 100%;
+      }
+
+      .keywords thead tr th.headerSortUp, .keywords thead tr th.headerSortDown {
+        background: #acc8dd;
+      }
+
+
+      .keywords tbody tr { 
+        color: #555;
+        border-bottom: 2px solid #acc8dd;
+        font-size: 17px;
+      }
+      .keywords tbody tr td {
+        text-align: center;
+        border: 1px solid #acc8dd;
+      }
+      .product_item {
+        display: flex;
+        border: 1px solid #acc8dd;
+        align-items: center;
+      }
+      .product_item div {
+        margin: 0 5px;
+      }
+      .amount_block {
+        height: 106px;
+        border: 1px solid #acc8dd;
+        line-height: 100px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1>蝦皮出貨單</h1>
+  
+    <table class="keywords" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th>訂單次序</th>
+          <th>寄件編號</th>
+          <th>便利商店</th>
+          <th>買家姓名</th>
+          <th>產品</th>
+          <th>數量</th>
+          <th>總數</th>
+          <th>備註</th>
+        </tr>
+      </thead>
+      <tbody id="content"></tbody>
+    </table>
+  </body>
+</html>
