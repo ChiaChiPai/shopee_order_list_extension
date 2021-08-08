@@ -62,20 +62,47 @@ function render_order(package_list) {
         `);
 
         order.order_items.forEach(info => {
-          $(`#${item.order_id} .product`).append(`
-            <div class="product_item">
-              <div>
-                <img with="100" height="100" src="https://cf.shopee.tw/file/${info.product.images[0]}" alt="">
+          
+          if(info.bundle_deal_model && info.bundle_deal_model.length > 0) {
+            
+            info.bundle_deal_product.forEach(bundleProduct => {
+              $(`#${item.order_id} .product`).append(`
+                <div class="product_item">
+                  <div>
+                    <img with="100" height="100" src="https://cf.shopee.tw/file/${bundleProduct.images[0]}" alt="">
+                  </div>
+                  <div style="text-align: left">
+                    <div>${bundleProduct.name}</div>
+                  </div>
+                </div>
+              `)
+            })
+            info.bundle_deal_model.forEach((bundle, index) => {
+              $(`#${item.order_id} .product .product_item`)[index].append(`
+                ${bundle.name}
+              `)
+            })
+            info.item_list.forEach(bundleAmount => {
+              total += bundleAmount.amount;
+              $(`#${item.order_id} .product_amount`).append(`<div class="amount_block">${bundleAmount.amount}</div`)
+              $(`#${item.order_id} .product_total`).text(`${total}雙`)
+            })
+          } else {
+            $(`#${item.order_id} .product`).append(`
+              <div class="product_item">
+                <div>
+                  <img with="100" height="100" src="https://cf.shopee.tw/file/${info.product.images[0]}" alt="">
+                </div>
+                <div style="text-align: left">
+                  <div style="border-bottom: 1px solid #000">${info.product.sku}</div>
+                  <div>${info.item_model.name}</div>
+                </div>
               </div>
-              <div style="text-align: left">
-                <div style="border-bottom: 1px solid #000">${info.product.sku}</div>
-                <div>${info.item_model.name}</div>
-              </div>
-            </div>
-          `)
-          $(`#${item.order_id} .product_amount`).append(`<div class="amount_block">${info.amount}</div`)
-          total += info.amount;
-          $(`#${item.order_id} .product_total`).text(`${total}雙`)
+            `)
+            $(`#${item.order_id} .product_amount`).append(`<div class="amount_block">${info.amount}</div`)
+            total += info.amount;
+            $(`#${item.order_id} .product_total`).text(`${total}雙`)
+          }
         })
       }
     })
