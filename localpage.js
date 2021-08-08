@@ -67,8 +67,10 @@ function render_order(package_list) {
               <div>
                 <img with="100" height="100" src="https://cf.shopee.tw/file/${info.product.images[0]}" alt="">
               </div>
-              <div>${info.product.sku}</div>
-              <div>\| ${info.item_model.name}</div>
+              <div style="text-align: left">
+                <div style="border-bottom: 1px solid #000">${info.product.sku}</div>
+                <div>${info.item_model.name}</div>
+              </div>
             </div>
           `)
           $(`#${item.order_id} .product_amount`).append(`<div class="amount_block">${info.amount}</div`)
