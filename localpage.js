@@ -71,9 +71,6 @@ function render_order(package_list) {
                   <div>
                     <img with="100" height="100" src="https://cf.shopee.tw/file/${bundleProduct.images[0]}" alt="">
                   </div>
-                  <div style="text-align: left">
-                    <div>${bundleProduct.name}</div>
-                  </div>
                 </div>
               `)
             })
@@ -104,6 +101,10 @@ function render_order(package_list) {
             $(`#${item.order_id} .product_total`).text(`${total}雙`)
           }
         })
+
+        if(total > 1) {
+          $(`#${item.order_id}.order_item`).addClass('bolder')
+        }
       }
     })
   })
