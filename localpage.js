@@ -104,6 +104,7 @@ function render_order(package_list) {
 
         if(total > 1) {
           $(`#${item.order_id}.order_item`).addClass('bolder')
+          $(`#${item.order_id}.order_item .product_total`).addClass('red')
         }
       }
     })
