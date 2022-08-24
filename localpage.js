@@ -14,7 +14,7 @@ function getShopeeList(page) {
   $.ajax({
     type: 'GET',
     async: true,
-    url: `https://seller.shopee.tw/api/v3/order/get_package_list?SPC_CDS=dbc10b2b-1188-41fd-a877-cacbdcef6b69&SPC_CDS_VER=2&source=processed&page_size=0&page_number=${page}&total=0&sort_by=confirmed_date_desc`,
+    url: `https://seller.shopee.tw/api/v3/order/get_package_list?SPC_CDS=dbc10b2b-1188-41fd-a877-cacbdcef6b69&SPC_CDS_VER=2&source=processed&page_size=40&page_number=${page}&total=0&sort_by=confirmed_date_desc`,
   }).done(function (data) {
     return data;
   }).then(data => {
