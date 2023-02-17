@@ -52,7 +52,7 @@ function render_order(package_list) {
           <tr id="${item.order_id}" class="order_item">
             <td>${orderIndex}</td>
             <td>${item.third_party_tn}</td>
-            <td>${item.carrier_name}</td>
+            <td>${order.actual_carrier}</td>
             <td>${order.buyer_address_name}</td>
             <td class="product"></td>
             <td class="product_amount"></td>
@@ -62,9 +62,7 @@ function render_order(package_list) {
         `);
 
         order.order_items.forEach(info => {
-          
           if(info.bundle_deal_model && info.bundle_deal_model.length > 0) {
-            
             info.bundle_deal_product.forEach(bundleProduct => {
               $(`#${item.order_id} .product`).append(`
                 <div class="product_item">
