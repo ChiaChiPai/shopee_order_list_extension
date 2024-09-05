@@ -8,25 +8,26 @@
 getShopeeList(1)
 let orderIndex = 0;
 let all_order_list = []
+// 一筆資料：page_sentinel=1684487980,OFG138187175258230
+// 5筆資料：page_sentinel=1684679647,OFG138378839219370
+// 6筆資料： page_sentinel=1684679787,OFG138378985285202
 
-function getShopeeList(page) {
-  console.log('get');
+function getShopeeList(page, total = 0, from_page_number = 1) {
   $.ajax({
     type: 'GET',
     async: true,
-    url: `https://seller.shopee.tw/api/v3/order/get_package_list?SPC_CDS=dbc10b2b-1188-41fd-a877-cacbdcef6b69&SPC_CDS_VER=2&source=processed&page_size=40&page_number=${page}&total=0&sort_by=confirmed_date_desc`,
+    url: `https://seller.shopee.tw/api/v3/order/get_package_list?SPC_CDS=f528fa2a-e120-4fa5-8b89-e20d36ae51bb&SPC_CDS_VER=2&source=processed&page_size=40&page_number=${page}&total=${total}&sort_by=confirmed_date_desc&from_page_number=${from_page_number}&flip_direction=ahead`,
   }).done(function (data) {
     return data;
   }).then(data => {
     if(data.code === 0) {
       all_order_list = [...all_order_list, ...data.data.package_list]
-      
+
       if(data.data.total > data.data.page_size*data.data.page_number) {
-        getShopeeList(data.data.page_number+1);
+        getShopeeList(data.data.page_number+1, data.data.total, data.data.page_number);
       } else {
         render_order(all_order_list.reverse())
       }
-  
     }
   })
 }
