@@ -1,9 +1,37 @@
 # 蝦皮 api
+## 清單索引
+[POST]
+
+postData = {
+  "mass_shipment_tab": 301,
+  "filter": {
+    "is_single_item": 0,
+    "shipping_document_type": 0,
+    "pre_order": 2,
+    "shipping_priority": 0,
+    "product_location_ids": [
+      ""
+    ],
+    "ofg_process_status": 0
+  },
+  "pagination": {
+    "from_page_number": 1,
+    "page_number": 1,
+    "page_size": 50
+  },
+  "sort": {
+    "sort_type": 2,
+    "ascending": true
+  },
+  "entity_type": 1,
+  "current_time": 1725634421
+}
+https://seller.shopee.tw/api/v3/order/search_mass_shipment_index?SPC_CDS=ac4ca4df-81b1-4aa8-b827-0d1a0ffbd2c6&SPC_CDS_VER=2
 
 ## 總訂單清單
 [POST]
 query = SPC_CDS=ac4ca4df-81b1-4aa8-b827-0d1a0ffbd2c6&SPC_CDS_VER=2
-{
+postData = {
   "mass_shipment_tab": 301,
   "package_number_list": [
     {
@@ -17,9 +45,10 @@ query = SPC_CDS=ac4ca4df-81b1-4aa8-b827-0d1a0ffbd2c6&SPC_CDS_VER=2
 
 https://seller.shopee.tw/api/v3/order/get_mass_shipment_card_list?SPC_CDS=ac4ca4df-81b1-4aa8-b827-0d1a0ffbd2c6&SPC_CDS_VER=2
 
-- 分類：蝦皮店到店
-- order_sn：data.group_card_list[0].package_card_list[0].basic_info.order_sn
 - order_id：data.group_card_list[0].package_card_list[0].ext_info.order_id
+
+
+- order_sn：data.group_card_list[0].package_card_list[0].basic_info.order_sn
 - 買家帳號：data.group_card_list[0].package_card_list[0].basic_info.buyer_username
 - 交貨便代碼：data.group_card_list[0].package_card_list[0].fulfillment_info.third_party_tn
 - 圖片：https://cf.shopee.tw/file/ +data.group_card_list[0].package_card_list[0].item_info.item_list[0].first_image
