@@ -75,61 +75,71 @@ async function getOrderIDList(package_number_list) {
   })
 }
 
-function renderOrder(orderList) {
-  orderList.forEach(({orderID, thirdPartyTNList}, index) => {
-    $.ajax({
-      type: 'GET',
-      async: false,
-      url: `https://seller.shopee.tw/api/v3/order/get_one_order?order_id=${orderID}&${urlQuery}`,
-    }).done(function (data) {
-      if(data.code === 0) {
-        const {
-          order_id,
-          actual_carrier,
-          remark,
-          buyer_user,
-          order_items,
-        } = data.data
-        let total = 0
-        $('#content').append(`
-          <tr id="${order_id}" class="order_item">
-            <td>${index + 1}</td>
-            <td>${thirdPartyTNList}</td>
-            <td>${actual_carrier}</td>
-            <td>${buyer_user.user_name}</td>
-            <td class="product"></td>
-            <td class="product_amount"></td>
-            <td class="product_total"></td>
-            <td>${remark}</td>
-          </tr>
-        `)
+async function fetchData(orderID, thirdPartyTNList) {
+  const response = await fetch(`https://seller.shopee.tw/api/v3/order/get_one_order?order_id=${orderID}&${urlQuery}`);
+  const data = await response.json();
+  return {...data, thirdPartyTNList};
+}
 
-        order_items.forEach(info => {
-          $(`#${order_id} .product`).append(`
-            <div class="product_item">
-              <div>
-                <img with="100" height="100" src="https://cf.shopee.tw/file/${info.product.images[0]}" alt="">
-              </div>
-              <div style="text-align: left">
-                <div style="border-bottom: 1px solid #000">${info.item_model.sku}</div>
-                <div>${info.item_model.name}</div>
-              </div>
-            </div>
-          `)
-          $(`#${order_id} .product_amount`).append(`<div class="amount_block">${info.amount}</div`)
-          total += info.amount;
-          $(`#${order_id} .product_total`).text(`${total}雙`)
-        })
+function checkTimeFormat(time) {
+  return time < 10 ? `0${time}` : time
+}
 
-        if(total > 1) {
-          $(`#${order_id}.order_item`).addClass('bolder')
-          $(`#${order_id}.order_item .product_total`).addClass('red')
-        }
-      } else {
-        throw new Error(`Can not get order detail, code: ${data.code}`)
-      }
-    }).catch(err => {
-      console.error(`Get order detail error: ${err}`)
+async function renderOrder(orderList) {
+  const ordersWithShippingTime = await orderList.map(async({orderID, thirdPartyTNList}) => {
+    const response = await fetchData(orderID, thirdPartyTNList)
+    return response
+  })
+  const resolvedOrders = await Promise.all(ordersWithShippingTime)
+  const sortedOrders = resolvedOrders
+    .map(item => ({...item.data, thirdPartyTNList: item.thirdPartyTNList}))
+    .sort((a, b) => a.shipping_confirm_time - b.shipping_confirm_time)
+
+  sortedOrders.forEach((item, index) => {
+    const {
+      order_id,
+      actual_carrier,
+      remark,
+      buyer_user,
+      order_items,
+      shipping_confirm_time,
+      thirdPartyTNList
+    } = item
+    let total = 0
+    const time = new Date(shipping_confirm_time * 1000)
+    $('#content').append(`
+      <tr id="${order_id}" class="order_item">
+        <td>${index + 1}</td>
+        <td>${thirdPartyTNList}</td>
+        <td>${actual_carrier}</td>
+        <td>${buyer_user.user_name}</td>
+        <td class="product"></td>
+        <td class="product_amount"></td>
+        <td class="product_total"></td>
+        <td>${time.getMonth()+1}/${time.getDate()} ${checkTimeFormat(time.getHours())}:${checkTimeFormat(time.getMinutes())}:${checkTimeFormat(time.getSeconds())}</td>
+        <td>${remark}</td>
+      </tr>
+    `)
+    order_items.forEach(info => {
+      $(`#${order_id} .product`).append(`
+        <div class="product_item">
+          <div>
+            <img with="100" height="100" src="https://cf.shopee.tw/file/${info.product.images[0]}" alt="">
+          </div>
+          <div style="text-align: left">
+            <div style="border-bottom: 1px solid #000">${info.item_model.sku}</div>
+            <div>${info.item_model.name}</div>
+          </div>
+        </div>
+      `)
+      $(`#${order_id} .product_amount`).append(`<div class="amount_block">${info.amount}</div`)
+      total += info.amount;
+      $(`#${order_id} .product_total`).text(`${total}雙`)
     })
+
+    if(total > 1) {
+      $(`#${order_id}.order_item`).addClass('bolder')
+      $(`#${order_id}.order_item .product_total`).addClass('red')
+    }
   })
 }
