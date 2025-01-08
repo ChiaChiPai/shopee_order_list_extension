@@ -1,9 +1,9 @@
-const urlQuery = 'SPC_CDS=ac4ca4df-81b1-4aa8-b827-0d1a0ffbd2c6&SPC_CDS_VER=2'
+const urlQuery = 'SPC_CDS=a44aeb4c-7738-46b6-b7a3-a39ad1d4f426&SPC_CDS_VER=2'
 main()
 
 async function main () {
-  const packageNumberList = await getPackageNumber()
-  const orderList = await getOrderIDList(packageNumberList)
+  const packageParamList = await getPackageNumber()
+  const orderList = await getOrderIDList(packageParamList)
   renderOrder(orderList)
 }
 
@@ -47,26 +47,27 @@ async function getPackageNumber() {
   })
 }
 
-async function getOrderIDList(package_number_list) {
+async function getOrderIDList(package_param_list) {
   return $.ajax({
     type: 'POST',
     async: true,
-    url: `https://seller.shopee.tw/api/v3/order/get_mass_shipment_card_list?${urlQuery}`,
+    url: `https://seller.shopee.tw/api/v3/order/get_mass_shipment_card_list_v2?${urlQuery}`,
     contentType: 'application/json',
     data: JSON.stringify({
       mass_shipment_tab: 301,
-      package_number_list
+      need_count_down_desc: false,
+      package_param_list
     })
   }).done(function (data) {
     return data;
   }).then(data => {
     if (data.code === 0) {
-      return  data.data.group_card_list.map(item => {
+      return  data.data.card_list.map(item => {
         return {
-          thirdPartyTNList: item.package_card_list[0].fulfillment_info.third_party_tn,
-          orderID: item.package_card_list[0].ext_info.order_id
+          thirdPartyTNList: item.package_group_card.package_card_list[0].fulfilment_info.tracking_number,
+          orderID: item.package_group_card.package_card_list[0].ext_info.order_id
         }
-      })
+      }).filter(item => item.thirdPartyTNList)
     } else {
       throw new Error(`Can not get order id list, code: ${data.code}`)
     }
