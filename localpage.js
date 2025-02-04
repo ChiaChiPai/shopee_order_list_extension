@@ -56,7 +56,7 @@ async function getOrderIDList(package_param_list) {
     data: JSON.stringify({
       mass_shipment_tab: 301,
       need_count_down_desc: false,
-      package_param_list
+      package_param_list: package_param_list.slice(0, 50)
     })
   }).done(function (data) {
     return data;
@@ -87,6 +87,7 @@ function checkTimeFormat(time) {
 }
 
 async function renderOrder(orderList) {
+  console.log('orderList', orderList)
   const ordersWithShippingTime = await orderList.map(async({orderID, thirdPartyTNList}) => {
     const response = await fetchData(orderID, thirdPartyTNList)
     return response
